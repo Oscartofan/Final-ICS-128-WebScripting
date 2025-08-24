@@ -556,18 +556,44 @@ function updateCatalogPrices() {
             html += `<tr><td>${prod.title}</td><td>${qty}</td><td>${getCurrencySymbol()}${price.toFixed(2)}</td><td>${getCurrencySymbol()}${total.toFixed(2)}</td></tr>`;
         });
         html += `</tbody></table></div>`;
-        // Example shipping/tax logic
-        const shipping = 15.00;
-        const tax = +(subtotal * 0.125).toFixed(2); // 12.5% tax
-        const orderTotal = subtotal + shipping + tax;
-        html += `<div class="mt-3"><table class="table"><tbody>`;
-        html += `<tr><th>Subtotal</th><td>${getCurrencySymbol()}${subtotal.toFixed(2)}</td></tr>`;
-        html += `<tr><th>Shipping</th><td>${getCurrencySymbol()}${shipping.toFixed(2)}</td></tr>`;
-        html += `<tr><th>Tax</th><td>${getCurrencySymbol()}${tax.toFixed(2)}</td></tr>`;
-        html += `<tr><th>Order Total</th><td><strong>${getCurrencySymbol()}${orderTotal.toFixed(2)}</strong></td></tr>`;
-        html += `</tbody></table></div>`;
+            // Shipping is 10% of subtotal
+            const shipping = +(subtotal * 0.10).toFixed(2);
+            // Tax rate by country
+            let country = $('#billing-country').val() || 'Canada';
+            let taxRate = 0.13; // Default Canada 13%
+            if (country === 'United States') taxRate = 0.07;
+            else if (country === 'Mexico') taxRate = 0.16;
+            const tax = +(subtotal * taxRate).toFixed(2);
+            const orderTotal = subtotal + shipping + tax;
+            html += `<div class=\"mt-3\"><table class=\"table\"><tbody>`;
+            html += `<tr><th>Subtotal</th><td>${getCurrencySymbol()}${subtotal.toFixed(2)}</td></tr>`;
+            html += `<tr><th>Shipping (10%)</th><td>${getCurrencySymbol()}${shipping.toFixed(2)}</td></tr>`;
+            html += `<tr><th>Tax (${(taxRate*100).toFixed(1)}% ${country})</th><td>${getCurrencySymbol()}${tax.toFixed(2)}</td></tr>`;
+            html += `<tr><th>Order Total</th><td><strong>${getCurrencySymbol()}${orderTotal.toFixed(2)}</strong></td></tr>`;
+            html += `</tbody></table></div>`;
         html += `<button type="button" class="btn btn-success" id="confirm-order-btn">Place Order</button>`;
         $('#step-confirm').html(html);
+                    // Inject success modal if not present
+                    if (!$('#order-success-modal').length) {
+                            $('body').append(`
+                            <div class=\"modal fade\" id=\"order-success-modal\" tabindex=\"-1\" aria-labelledby=\"orderSuccessLabel\" aria-hidden=\"true\">
+                                <div class=\"modal-dialog\">
+                                    <div class=\"modal-content\">
+                                        <div class=\"modal-header\">
+                                            <h5 class=\"modal-title text-success\" id=\"orderSuccessLabel\">Success!</h5>
+                                            <button type=\"button\" class=\"btn-close\" data-bs-dismiss=\"modal\" aria-label=\"Close\"></button>
+                                        </div>
+                                        <div class=\"modal-body\">
+                                            <p>Your order was successfully placed!</p>
+                                        </div>
+                                        <div class=\"modal-footer\">
+                                            <button type=\"button\" class=\"btn btn-primary\" data-bs-dismiss=\"modal\">Okay</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            `);
+                    }
     }
 		// Show spinner on page load
 		$(function() {
@@ -580,3 +606,14 @@ function updateCatalogPrices() {
                 document.getElementById('loading-spinner').style.display = 'none';
             }, 5000);
         });
+            // Show success modal when Place Order is clicked
+            $(document).on('click', '#confirm-order-btn', function() {
+                var modal = new bootstrap.Modal(document.getElementById('order-success-modal'));
+                modal.show();
+                // Optionally clear cart and close checkout modal
+                cartItems = {};
+                saveCartToCookie();
+                updateCart();
+                var paymentModal = bootstrap.Modal.getInstance(document.getElementById('paymentModal'));
+                if (paymentModal) paymentModal.hide();
+            });
