@@ -611,8 +611,14 @@ function updateCatalogPrices() {
                 // Collect all checkout data
                 // --- Collect and validate all checkout data ---
                 let errors = [];
-                let card_number = ($('#card-number').val() || '').replace(/\s+/g, '');
-                if (!/^\d{16}$/.test(card_number)) errors.push('Card number must be 16 digits, no spaces.');
+                let card_number_raw = $('#card-number').val() || '';
+                let card_number = card_number_raw.replace(/\s+/g, '');
+                // Card type validation
+                let cardType = '';
+                if (/^4\d{15}$/.test(card_number)) cardType = 'Visa';
+                else if (/^5[1-5]\d{14}$/.test(card_number)) cardType = 'Mastercard';
+                else if (/^3[47]\d{13}$/.test(card_number)) cardType = 'Amex';
+                if (!cardType) errors.push('Card number must be a valid Visa, Mastercard, or Amex.');
                 let expiry_month = $('#card-exp-month').val() || '';
                 if (!/^\d{2}$/.test(expiry_month)) errors.push('Expiration month must be two digits.');
                 let expiry_year = $('#card-exp-year').val() || '';
@@ -714,23 +720,40 @@ function updateCatalogPrices() {
                     shipping
                 };
 
-                /*   NOTES FOR THE TEACHER
-                    Simulate order submission due to CORS restriction.
-                    See assignment instructions: only Fakestore, Currency, and Geocoder APIs are allowed
-                    The order JSON is logged for review
-                    https://deepblue.camosun.bc.ca/~c0180354/ics128/final/ this endpoint that I tried to POST my browser blocks the request
-                    because of CORS policy restrictions.
-
-                */
-
-                console.log('Order JSON (simulated submission):', orderData);
-                $('#order-success-modal .modal-title').text('Success!').removeClass('text-danger').addClass('text-success');
-                $('#order-success-modal .modal-body').html('<p>Your order was successfully placed!<br><small>(Simulated, see console for JSON. CORS blocks real submission.)</small></p>');
-                var modal = new bootstrap.Modal(document.getElementById('order-success-modal'));
-                modal.show();
-                cartItems = {};
-                saveCartToCookie();
-                updateCart();
-                var paymentModal = bootstrap.Modal.getInstance(document.getElementById('paymentModal'));
-                if (paymentModal) paymentModal.hide();
+                // Assignment: Use fetch + FormData to POST to API endpoint
+                let form_data = new FormData();
+                form_data.append('submission', JSON.stringify(orderData));
+                fetch('https://deepblue.camosun.bc.ca/~c0180354/ics128/final/', {
+                    method: 'POST',
+                    cache: 'no-cache',
+                    body: form_data
+                })
+                .then(async response => {
+                    let data;
+                    try { data = await response.json(); } catch (e) { data = null; }
+                    if (!response.ok || (data && data.error)) {
+                        let msg = 'There was an error submitting your order.';
+                        if (data && data.error) msg = data.error;
+                        $('#order-success-modal .modal-title').text('Error!').removeClass('text-success').addClass('text-danger');
+                        $('#order-success-modal .modal-body').html('<p>' + msg + '</p>');
+                        var modal = new bootstrap.Modal(document.getElementById('order-success-modal'));
+                        modal.show();
+                    } else {
+                        $('#order-success-modal .modal-title').text('Success!').removeClass('text-danger').addClass('text-success');
+                        $('#order-success-modal .modal-body').html('<p>Your order was successfully placed!</p>');
+                        var modal = new bootstrap.Modal(document.getElementById('order-success-modal'));
+                        modal.show();
+                        cartItems = {};
+                        saveCartToCookie();
+                        updateCart();
+                        var paymentModal = bootstrap.Modal.getInstance(document.getElementById('paymentModal'));
+                        if (paymentModal) paymentModal.hide();
+                    }
+                })
+                .catch(err => {
+                    $('#order-success-modal .modal-title').text('Error!').removeClass('text-success').addClass('text-danger');
+                    $('#order-success-modal .modal-body').html('<p>Network error submitting your order.<br>' + err + '</p>');
+                    var modal = new bootstrap.Modal(document.getElementById('order-success-modal'));
+                    modal.show();
+                });
             });
