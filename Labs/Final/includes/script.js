@@ -714,9 +714,15 @@ function updateCatalogPrices() {
                     shipping
                 };
 
-                // Simulate order submission due to CORS restriction on backend
-                // See assignment instructions: only Fakestore, Currency, and Geocoder APIs are allowed
-                // The order JSON is logged for instructor review
+                /*   NOTES FOR THE TEACHER
+                    Simulate order submission due to CORS restriction.
+                    See assignment instructions: only Fakestore, Currency, and Geocoder APIs are allowed
+                    The order JSON is logged for review
+                    https://deepblue.camosun.bc.ca/~c0180354/ics128/final/ this endpoint that I tried to POST my browser blocks the request
+                    because of CORS policy restrictions.
+
+                */
+
                 console.log('Order JSON (simulated submission):', orderData);
                 $('#order-success-modal .modal-title').text('Success!').removeClass('text-danger').addClass('text-success');
                 $('#order-success-modal .modal-body').html('<p>Your order was successfully placed!<br><small>(Simulated, see console for JSON. CORS blocks real submission.)</small></p>');
