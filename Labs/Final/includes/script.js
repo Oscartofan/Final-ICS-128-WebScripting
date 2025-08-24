@@ -533,8 +533,42 @@ function updateCatalogPrices() {
             $('#step-confirm-tab').addClass('active');
             $('.step-content').addClass('d-none');
             $('#step-confirm').removeClass('d-none');
+                renderOrderConfirmation();
         });
 
+    // Render order confirmation summary with all cart items
+    function renderOrderConfirmation() {
+        const cartArray = Object.entries(cartItems);
+        let html = `<h5>Order Confirmation</h5><p>Review your order and submit.</p>`;
+        if (cartArray.length === 0) {
+            html += '<p>Your cart is empty.</p>';
+            $('#step-confirm').html(html);
+            return;
+        }
+        html += `<div class="table-responsive"><table class="table"><thead><tr><th>Item</th><th>Qty</th><th>Price</th><th>Total</th></tr></thead><tbody>`;
+        let subtotal = 0;
+        cartArray.forEach(function([id, qty]) {
+            const prod = productData[id];
+            if (!prod) return;
+            const price = convertPrice(prod.price);
+            const total = price * qty;
+            subtotal += total;
+            html += `<tr><td>${prod.title}</td><td>${qty}</td><td>${getCurrencySymbol()}${price.toFixed(2)}</td><td>${getCurrencySymbol()}${total.toFixed(2)}</td></tr>`;
+        });
+        html += `</tbody></table></div>`;
+        // Example shipping/tax logic
+        const shipping = 15.00;
+        const tax = +(subtotal * 0.125).toFixed(2); // 12.5% tax
+        const orderTotal = subtotal + shipping + tax;
+        html += `<div class="mt-3"><table class="table"><tbody>`;
+        html += `<tr><th>Subtotal</th><td>${getCurrencySymbol()}${subtotal.toFixed(2)}</td></tr>`;
+        html += `<tr><th>Shipping</th><td>${getCurrencySymbol()}${shipping.toFixed(2)}</td></tr>`;
+        html += `<tr><th>Tax</th><td>${getCurrencySymbol()}${tax.toFixed(2)}</td></tr>`;
+        html += `<tr><th>Order Total</th><td><strong>${getCurrencySymbol()}${orderTotal.toFixed(2)}</strong></td></tr>`;
+        html += `</tbody></table></div>`;
+        html += `<button type="button" class="btn btn-success" id="confirm-order-btn">Place Order</button>`;
+        $('#step-confirm').html(html);
+    }
 		// Show spinner on page load
 		$(function() {
             $('#loading-spinner').show();
