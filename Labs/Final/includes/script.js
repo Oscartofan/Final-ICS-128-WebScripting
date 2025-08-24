@@ -606,14 +606,112 @@ function updateCatalogPrices() {
                 document.getElementById('loading-spinner').style.display = 'none';
             }, 5000);
         });
-            // Show success modal when Place Order is clicked
+            // Submit order as JSON when Place Order is clicked
             $(document).on('click', '#confirm-order-btn', function() {
-                var modal = new bootstrap.Modal(document.getElementById('order-success-modal'));
-                modal.show();
-                // Optionally clear cart and close checkout modal
-                cartItems = {};
-                saveCartToCookie();
-                updateCart();
-                var paymentModal = bootstrap.Modal.getInstance(document.getElementById('paymentModal'));
-                if (paymentModal) paymentModal.hide();
+                // Collect all checkout data
+                let card_number = ($('#card-number').val() || '').replace(/\s+/g, '');
+                let expiry_month = $('#card-exp-month').val() || '';
+                let expiry_year = $('#card-exp-year').val() || '';
+                let security_code = $('#card-cvc').val() || '';
+                let currency = currentCurrency.toLowerCase();
+
+                // Totals
+                let subtotal = 0;
+                let items = {};
+                Object.entries(cartItems).forEach(([id, qty]) => {
+                    const prod = productData[id];
+                    if (!prod) return;
+                    const price = convertPrice(prod.price);
+                    subtotal += price * qty;
+                    items[id] = {
+                        title: prod.title,
+                        qty: qty,
+                        price: price.toFixed(2),
+                        total: (price * qty).toFixed(2)
+                    };
+                });
+                const shipping_amount = +(subtotal * 0.10).toFixed(2);
+                let countryName = $('#billing-country').val() || 'Canada';
+                let countryCode = 'ca';
+                let taxRate = 0.13;
+                if (countryName === 'United States') { countryCode = 'us'; taxRate = 0.07; }
+                else if (countryName === 'Mexico') { countryCode = 'mx'; taxRate = 0.16; }
+                const taxes = +(subtotal * taxRate).toFixed(2);
+                const amount = +(subtotal + shipping_amount + taxes).toFixed(2);
+
+                // Billing
+                let billing = {
+                    first_name: $('#billing-firstname').val() || '',
+                    last_name: $('#billing-lastname').val() || '',
+                    address_1: $('#billing-address').val() || '',
+                    address_2: $('#billing-address2').val() || '',
+                    city: $('#billing-city').val() || '',
+                    province: $('#billing-province').val() || '',
+                    country: countryCode,
+                    postal: $('#billing-postal').val() || '',
+                    phone: $('#billing-phone').val() || '',
+                    email: $('#billing-email').val() || ''
+                };
+                // Shipping
+                let shipping = {};
+                if ($('#shipping-same-billing').is(':checked')) {
+                    shipping = {...billing};
+                    delete shipping.email; // Only billing has email
+                } else {
+                    shipping = {
+                        first_name: $('#shipping-firstname').val() || '',
+                        last_name: $('#shipping-lastname').val() || '',
+                        address_1: $('#shipping-address').val() || '',
+                        address_2: $('#shipping-address2').val() || '',
+                        city: $('#shipping-city').val() || '',
+                        province: $('#shipping-province').val() || '',
+                        country: countryCode,
+                        postal: $('#shipping-postal').val() || ''
+                    };
+                }
+
+                // Build order JSON
+                let orderData = {
+                    card_number,
+                    expiry_month,
+                    expiry_year,
+                    security_code,
+                    amount: amount.toFixed(2),
+                    taxes: taxes.toFixed(2),
+                    shipping_amount: shipping_amount.toFixed(2),
+                    currency,
+                    items,
+                    billing,
+                    shipping
+                };
+
+                // Submit via AJAX
+                $.ajax({
+                    url: 'https://deepblue.camosun.bc.ca/~c0180354/ics128/final/',
+                    method: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify(orderData),
+                    success: function(response) {
+                        // Show success modal
+                        var modal = new bootstrap.Modal(document.getElementById('order-success-modal'));
+                        $('#order-success-modal .modal-body').html('<p>Your order was successfully placed!</p>');
+                        modal.show();
+                        cartItems = {};
+                        saveCartToCookie();
+                        updateCart();
+                        var paymentModal = bootstrap.Modal.getInstance(document.getElementById('paymentModal'));
+                        if (paymentModal) paymentModal.hide();
+                    },
+                    error: function(xhr) {
+                        // Show error in modal, guide user to fix
+                        let msg = 'There was an error submitting your order.';
+                        if (xhr.responseJSON && xhr.responseJSON.error) {
+                            msg = xhr.responseJSON.error;
+                        }
+                        $('#order-success-modal .modal-title').text('Error!').removeClass('text-success').addClass('text-danger');
+                        $('#order-success-modal .modal-body').html('<p>' + msg + '</p>');
+                        var modal = new bootstrap.Modal(document.getElementById('order-success-modal'));
+                        modal.show();
+                    }
+                });
             });
