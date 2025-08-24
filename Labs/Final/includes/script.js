@@ -609,10 +609,16 @@ function updateCatalogPrices() {
             // Submit order as JSON when Place Order is clicked
             $(document).on('click', '#confirm-order-btn', function() {
                 // Collect all checkout data
+                // --- Collect and validate all checkout data ---
+                let errors = [];
                 let card_number = ($('#card-number').val() || '').replace(/\s+/g, '');
+                if (!/^\d{16}$/.test(card_number)) errors.push('Card number must be 16 digits, no spaces.');
                 let expiry_month = $('#card-exp-month').val() || '';
+                if (!/^\d{2}$/.test(expiry_month)) errors.push('Expiration month must be two digits.');
                 let expiry_year = $('#card-exp-year').val() || '';
+                if (!/^\d{4}$/.test(expiry_year)) errors.push('Expiration year must be four digits.');
                 let security_code = $('#card-cvc').val() || '';
+                if (!/^\d{3,4}$/.test(security_code)) errors.push('Security code must be 3 or 4 digits.');
                 let currency = currentCurrency.toLowerCase();
 
                 // Totals
@@ -630,6 +636,7 @@ function updateCatalogPrices() {
                         total: (price * qty).toFixed(2)
                     };
                 });
+                if (subtotal === 0) errors.push('Your cart is empty.');
                 const shipping_amount = +(subtotal * 0.10).toFixed(2);
                 let countryName = $('#billing-country').val() || 'Canada';
                 let countryCode = 'ca';
@@ -652,6 +659,15 @@ function updateCatalogPrices() {
                     phone: $('#billing-phone').val() || '',
                     email: $('#billing-email').val() || ''
                 };
+                // Validate billing fields
+                Object.entries(billing).forEach(([key, val]) => {
+                    if (key !== 'address_2' && !val) errors.push('Billing ' + key.replace('_',' ') + ' is required.');
+                });
+                // Remove address_2 if empty
+                if (!billing.address_2) delete billing.address_2;
+                if (!/^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/.test(billing.email)) errors.push('Billing email is invalid.');
+                if (!/^\d{3}-\d{3}-\d{4}$/.test(billing.phone)) errors.push('Billing phone must be in format 123-456-7890.');
+
                 // Shipping
                 let shipping = {};
                 if ($('#shipping-same-billing').is(':checked')) {
@@ -668,6 +684,19 @@ function updateCatalogPrices() {
                         country: countryCode,
                         postal: $('#shipping-postal').val() || ''
                     };
+                    Object.entries(shipping).forEach(([key, val]) => {
+                        if (key !== 'address_2' && !val) errors.push('Shipping ' + key.replace('_',' ') + ' is required.');
+                    });
+                    if (!shipping.address_2) delete shipping.address_2;
+                }
+
+                // If errors, show in modal and do not submit
+                if (errors.length > 0) {
+                    $('#order-success-modal .modal-title').text('Error!').removeClass('text-success').addClass('text-danger');
+                    $('#order-success-modal .modal-body').html('<ul style="color:red">' + errors.map(e => '<li>'+e+'</li>').join('') + '</ul>');
+                    var modal = new bootstrap.Modal(document.getElementById('order-success-modal'));
+                    modal.show();
+                    return;
                 }
 
                 // Build order JSON
@@ -693,8 +722,9 @@ function updateCatalogPrices() {
                     data: JSON.stringify(orderData),
                     success: function(response) {
                         // Show success modal
-                        var modal = new bootstrap.Modal(document.getElementById('order-success-modal'));
+                        $('#order-success-modal .modal-title').text('Success!').removeClass('text-danger').addClass('text-success');
                         $('#order-success-modal .modal-body').html('<p>Your order was successfully placed!</p>');
+                        var modal = new bootstrap.Modal(document.getElementById('order-success-modal'));
                         modal.show();
                         cartItems = {};
                         saveCartToCookie();
@@ -703,10 +733,12 @@ function updateCatalogPrices() {
                         if (paymentModal) paymentModal.hide();
                     },
                     error: function(xhr) {
-                        // Show error in modal, guide user to fix
+                        // Show detailed error in modal, guide user to fix
                         let msg = 'There was an error submitting your order.';
                         if (xhr.responseJSON && xhr.responseJSON.error) {
                             msg = xhr.responseJSON.error;
+                        } else if (xhr.responseText) {
+                            msg += '<br><pre>' + xhr.responseText + '</pre>';
                         }
                         $('#order-success-modal .modal-title').text('Error!').removeClass('text-success').addClass('text-danger');
                         $('#order-success-modal .modal-body').html('<p>' + msg + '</p>');
