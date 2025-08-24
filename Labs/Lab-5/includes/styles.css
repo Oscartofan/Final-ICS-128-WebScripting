@@ -1,0 +1,25 @@
+body {background-color: #dddddd}
+
+section{margin-left: 22px};
+
+
+table{
+    border-collapse: separate;
+    border-spacing: 1px; /* creates space between cells */
+}
+td{
+    border: 1px solid black;
+    padding: 5px;
+}
+#myButton {
+    border: none;
+    outline: 2px dotted #0ab1ff;
+    color: #13a81f;
+
+}
+
+input {
+    border: none;
+    outline: 2px dotted #0ab1ff;
+    color: #13a81f;
+}

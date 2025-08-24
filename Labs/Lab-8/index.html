@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>ICS 128 Lab 08 - Dynamic Quiz</title>
+		<link rel="stylesheet" href="includes/style.css">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script> 
+		
+	</head>
+	<body>
+
+		<div id="container">
+			<header>
+				<h2>Myanmar Trivia Quiz</h2>
+				<p> Test your Demographic Knowledge </p>
+			</header>
+			<section>
+			    <div id="welcome"></div>
+				<div id="results"></div>
+				<form id="quizform" name="quizform">
+					<div class="question-group" id="question1">
+						<h3>1. What is the population of Colombia (as of 2017)? </h3>
+						<input type="radio" class="quiz-radio" name="q1" value="53.5" id="q1a">a. 53.5 million<br>
+						<input type="radio" class="quiz-radio" name="q1" value="77.5" id="q1b">b. 77.5 million<br>
+						<input type="radio" class="quiz-radio" name="q1" value="27.4" id="q1c">c. 27.4 million<br>
+						<input type="radio" class="quiz-radio" name="q1" value="8.9" id="q1d">d. 8.9 million<br>
+						<div id="hintdiv1" class="hintdivstyle"><a href="#" class="hint-link" data-hint="#q1hint">[HINT]</a><span id="q1hint" class="hint-message" style="display:none;">53.5 million. It's more than the population of Canada.</span></div>
+					</div>
+
+					<div class="question-group" id="question2">
+						<h3>2. What is the official capital city of Colombia?</h3>
+						<input type="radio" class="quiz-radio" name="q2" value="Bogota" id="q2a">a. Bogota<br>
+						<input type="radio" class="quiz-radio" name="q2" value="Medellin" id="q2b">b. Medellín<br>
+						<input type="radio" class="quiz-radio" name="q2" value="Cali" id="q2c">c. Cali<br>
+						<input type="radio" class="quiz-radio" name="q2" value="Cartagena" id="q2d">d. Cartagena<br>
+						<div id="hintdiv2" class="hintdivstyle"><a href="#" class="hint-link" data-hint="#q2hint">[HINT]</a><span id="q2hint" class="hint-message" style="display:none;">It's the tallest city of Colombia and population 9M.</span></div>
+					</div>
+
+					<div class="question-group" id="question3">
+						<h3>3. What is the best Coffee in Colombia?</h3>
+						<input type="radio" class="quiz-radio" name="q3" value="Tostao'" id="q3a">a. Tostao'<br>
+						<input type="radio" class="quiz-radio" name="q3" value="Juan Valdez" id="q3b">b. Juan Valdez<br>
+						<input type="radio" class="quiz-radio" name="q3" value="Starbucks" id="q3c">c. Starbucks<br>
+						<input type="radio" class="quiz-radio" name="q3" value="Dunkin' Donuts" id="q3d">d. Dunkin' Donuts<br>
+						<div id="hintdiv3" class="hintdivstyle"><a href="#" class="hint-link" data-hint="#q3hint">[HINT]</a><span id="q3hint" class="hint-message" style="display:none;">Flavorful, tasty, with a rich aroma.</span></div>
+					</div>
+
+					<div class="question-group" id="question4">
+						<h3>4. Colombia was formerly under Spanish colonial rule. (True or False) </h3>
+						<input type="radio" class="quiz-radio" name="q4" value="True" id="q4a">a. True<br>
+						<input type="radio" class="quiz-radio" name="q4" value="False" id="q4b">b. False<br>
+						<div id="hintdiv4" class="hintdivstyle"><a href="#" class="hint-link" data-hint="#q4hint">[HINT]</a><span id="q4hint" class="hint-message" style="display:none;">True. Think of the main language spoken in Colombia.</span></div>
+					</div>
+
+					<div class="question-group" id="question5">
+						<h3>5. Which of the following countries border Colombia? (Choose all that apply)</h3>
+						<input type="checkbox" class="quiz-checkbox" name="q5" value="Brazil" id="q5a">a. Brazil<br>
+						<input type="checkbox" class="quiz-checkbox" name="q5" value="Argentina" id="q5b">b. Argentina<br>
+						<input type="checkbox" class="quiz-checkbox" name="q5" value="Venezuela" id="q5c">c. Venezuela<br>
+						<input type="checkbox" class="quiz-checkbox" name="q5" value="Ecuador" id="q5d">d. Ecuador<br>
+						<input type="checkbox" class="quiz-checkbox" name="q5" value="Peru" id="q5e">e. Peru<br>
+						<input type="checkbox" class="quiz-checkbox" name="q5" value="Chile" id="q5f">f. Chile<br>
+						<div id="hintdiv5" class="hintdivstyle">
+							<a href="#" class="hint-link" data-hint="#q5hint">[HINT]</a>
+							<span id="q5hint" class="hint-message" style="display:none;">Brazil, Venezuela, Ecuador, Peru, and Panama. Colombia borders 5 countries in South America.</span>
+						</div>
+					</div>
+
+					<br><br>
+					<input type="submit" value="Submit Answers">
+					<div id="results2"></div>
+				</form> 
+				
+			</section>
+			<footer>
+				<p> Copyright &copy; 2019. All rights reserved</p>
+			</footer>
+		</div>
+	<script src="includes/script.js"></script>
+	</body>
+</html>

@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>"Oscar Fernando Varela Revelo - ICS 128 - Lab #1</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4Q6Gf2aSP4eDXB8Miphtr37CMZZQ5oXLH2yaXMJ2w8e2ZtHTl7GptT4jmndRuHDT" crossorigin="anonymous">
+	<script src="includes/script.js"></script>
+	<link rel="stylesheet" href="includes/styles.css">
+  </head>
+  <body>
+<div class="container mt-3" id="hello"></div>
+<div class="container mt-2" id="part3"></div>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js" integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO" crossorigin="anonymous"></script>
+	<script src="includes/script.js"></script>
+  <script>
+    // Creating arrays
+    let numbers = [1, 2, 3, 4, 5]; // Array literal
+    let fruits = new Array("Apple", "Banana", "Cherry"); // Array constructor
+
+    // Accessing elements
+    console.log(numbers[0]); // First element
+
+    // Adding and removing elements
+    numbers.push(6); // Adds 6 to the end
+    numbers.pop(); // Removes last element
+    numbers.shift(); // Removes first element
+    numbers.unshift(0); // Adds 0 to the beginning
+    // Function declaration
+    function greet(name) {
+      return `Hello, ${name}!`;
+    }
+
+    // Function expression
+    const add = function(x, y) {
+      return x + y;
+    };
+
+    // Arrow function
+    const multiply = (a, b) => a * b;
+
+    console.log(greet("Oscar")); // Output: Hello, Oscar!
+    console.log(add(5, 3)); // Output: 8
+
+    // For loop
+    for (let i = 0; i < 5; i++) {
+      console.log(i);
+    }
+
+    // While loop
+    let j = 0;
+    while (j < 5) {
+      console.log(j);
+      j++;
+    }
+
+    // ForEach loop (Array iteration)
+    fruits.forEach(fruit => console.log(fruit));
+
+    // Selecting an element
+    let element = document.querySelector("#myElement");
+
+    // Changing CSS class
+    element.classList.add("highlight");
+
+    // Adding content dynamically
+    element.innerHTML = "<p>New Content Added!</p>";
+
+    //Eror handling
+    try {
+      throw new Error("Something went wrong!");
+    } catch (error) {
+      console.log(error.message);
+    } finally {
+      console.log("This always runs.");
+    }
+
+    // Math object
+    console.log(Math.random()); // Random number (0 - 1)
+    console.log(Math.round(4.7)); // Round number
+
+    // Array methods
+    let data = [10, 20, 30];
+    console.log(data.map(x => x * 2)); // [20, 40, 60]
+
+    // Date object
+    let today = new Date();
+    console.log(today.toDateString()); // Current date in string format
+
+</script>
+
+  </body>
+</html>

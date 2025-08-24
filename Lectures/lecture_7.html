@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>"Oscar Fernando Varela Revelo - ICS 128 - Lab #1</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4Q6Gf2aSP4eDXB8Miphtr37CMZZQ5oXLH2yaXMJ2w8e2ZtHTl7GptT4jmndRuHDT" crossorigin="anonymous">
+    <script src="js/script.js"></script>
+	<link rel="stylesheet" href="css/styles.css">
+  </head>
+  <body>
+    first div <div id="output1"></div>
+    first div <div id="output2"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js" integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO" crossorigin="anonymous"></script>
+    <script src="js/script.js"></script>
+    <script>
+        /*
+        let num1 = prompt("Please enter 1 number");
+        let num2 = prompt("Please enter another number");
+        
+        let result = parseInt(num1) + parseInt(num2);
+
+        document.querySelector("#display").innerHTML = result;
+        
+
+        let str1 = prompt("Please enter 1 str");
+        let str2 = prompt("Please enter another str");
+
+        let contac = str1 + str2;
+
+        document.querySelector("#output1").innerHTML = contac;
+        document.querySelector("#output2").innerHTML = contac;
+        
+        
+        let input = prompt("Enter and int");
+        let m3 = input % 3;
+        let m5 = input % 5;
+
+        switch(input){
+            case (m3 == 0):
+                console.log("foo");
+                break;
+            case (m5 == 0):
+                console.log("bar");
+                break;
+            default:
+                console.log("numero raro");
+                break;
+        }
+        
+        let student = {
+                        name: "Sally",
+                        age: 19
+                    };
+        // old way
+        student.show_name = function() {
+            alert("The student name is: " + this.name);
+        }
+
+        // invoke the methods
+        student.show_name();
+        */
+        
+        let miid = document.querySelector("#output1");
+        let miid2 = document.querySelector("#output2");
+
+        function miWebo(a,b) {
+          return a * b;
+        }
+
+        let miwebov2 = (x, y) => {
+          return x * x + y / 2
+        };
+
+        miid.innerHTML = miWebo(6,6);
+        miid2.innerHTML = miwebov2(9,3)
+
+        console.log(miWebo(3,2))
+
+        const oscar = 20;
+        const varela = 100;
+        const fullname = 'Oscar fernando Varela Revelo'
+
+        console.log(`Mi nombre completo es ${fullname} y tengo ${oscar} papas y me gusta jugar ${varela} horas al valorant`)
+        
+
+    </script>
+  </body>
+</html>

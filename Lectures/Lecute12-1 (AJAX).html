@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+  <body>
+      <div id="demo">
+      <h2>Let AJAX magically change this text</h2>
+      <button type="button" id="magic-button">Change Content</button>
+    </div>
+    <script>
+      // let load_text = () => {
+      //   let xhttp = new XMLHttpRequest();
+      //   xhttp.onreadystatechange = function() {
+
+      //     if (this.readyState == 4 && this.status == 200) {
+      //       document.querySelector("#demo").innerHTML = this.responseText;
+      //     }
+      //   };
+      //   // xhttp.open("POST", "demo_post2.asp", true);
+      //   // xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+      //   // xhttp.send("fname=Henry&lname=Ford");
+      //   xhttp.open("GET", "https://128.compsci.cc/ajax/example.txt");
+      //   xhttp.send();
+      // }
+      // document.querySelector("#magic-button").addEventListener("click", load_text);
+
+      let load_xml = function() {
+        let xhttp = new XMLHttpRequest();
+        
+        xhttp.onreadystatechange = function() {
+          if (this.readyState == 4 && this.status == 200) {
+            renderData(this);
+          }
+        };
+        xhttp.open("GET", "https://128.compsci.cc/ajax/example.xml", true);
+        xhttp.send();
+      }
+
+      let renderData = (xhttp) => {
+        let xmlDoc = xhttp.responseXML;
+        let table = `<tr><th>Artist</th><th>Title</th></tr>`;
+        let records = xmlDoc.getElementsbyTagName("ALBUM");
+        
+        for (let i = 0; i < records.length; i++) {
+          table += `<tr><td>`;
+          table += records[i].getElementsByTagName("ARTIST")[0].childNodes[0].nodeValue;
+          table += `</td><td>`;
+          table += records[i].getElementsByTagName("TITLE")[0].childNodes[0].nodeValue;
+          table += `</td></tr>`;
+        }
+        document.querySelector("#demo").innerHTML = `<table>${table}</table>`;
+      }
+
+
+    </script>
+  </body>
+</html>

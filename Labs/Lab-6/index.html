@@ -1,0 +1,258 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>"Oscar Fernando Varela Revelo - ICS 128 - Lab #6</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4Q6Gf2aSP4eDXB8Miphtr37CMZZQ5oXLH2yaXMJ2w8e2ZtHTl7GptT4jmndRuHDT" crossorigin="anonymous">
+	  <script src="includes/script.js"></script>
+    <link rel="stylesheet" href="includes/styles.css">
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">Oscar Varela</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="https://oscar.118.compsci.cc/lab-01/screenshots/Oscar_Varela_Lab01_Student_Drive_Screenshot.jpg">lab 1</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="https://oscar.118.compsci.cc/lab-02/">Lab 2</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="https://oscar.118.compsci.cc/lab-03/">Lab 3</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="https://oscar.118.compsci.cc/lab-04/lab4.html">Lab 4</a>
+            </li>
+        <li class="nav-item">
+              <a class="nav-link" href="https://oscar.118.compsci.cc/lab-05/lab05.html">Lab 5</a>
+            </li>
+        <li class="nav-item">
+              <a class="nav-link" href="https://oscar.118.compsci.cc/lab-06/">Lab 6</a>
+            </li>
+        <li class="nav-item">
+              <a class="nav-link" href="https://oscar.118.compsci.cc/lab-07/">Lab 7</a>
+            </li>
+        <li class="nav-item">
+              <a class="nav-link" href="https://oscar.118.compsci.cc/project-02/">Project</a>
+            </li>
+        
+          </ul>
+        </div>
+      </div>
+    </nav>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js" integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO" crossorigin="anonymous"></script>
+	<script src="includes/script.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  
+  <section class="mx-0">
+    <h1>Lab 06</h1>
+    <h3 class="mb-4">Part 1: Objects!</h3>
+
+    <p id="hotel-name"></p>
+    <p id="hotel-rooms"></p>
+    <p id="book-room"></p>
+    <p id="cancel-room"></p>
+    <p id="room-types"></p>
+    <p id="airport-shuttle"></p>
+    <p id="swimming-pool"></p>
+    <p id="hotel-restaurants-lenght"></p>
+    <p id="hotel-restaurants"></p>
+
+
+
+  </section> 
+  <script>
+    class Hotel {
+      constructor(name, location, rooms, booked, gym) {
+        this._name = name;
+        this._location = location;
+        this._rooms = rooms;
+        this._booked = booked;
+        this._gym = gym;
+        this._roomTypes = [];
+        this._swimmingPool = false;
+        this._airportShuttle = false;
+        this._restaurants = new Map();
+      }
+      
+      get name() {
+        return this._name;
+      }
+      get location() {
+        return this._location
+      }
+      get rooms() {
+        return this._rooms;
+      }
+      get booked() {
+        return this._booked;
+      }
+      get gym() {
+        return this._gym;
+      }
+      get roomTypes() {
+        return this._roomTypes;
+      }
+      get swimmingPool() {
+        return this._swimmingPool;
+      }
+      get airportShuttle() {
+        return this._airportShuttle;
+      }
+      get restaurants () {
+        return this._restaurants;
+      }
+
+      set name(x) {this._name = x;}
+      set location(x) {this._location = x;}
+      set rooms(x) {this._rooms = x;}
+      set booked(x) {this._booked = x;}
+      set gym(x) {this._gym = x;}
+      set roomTypes(x) {this._roomTypes = x;}
+      set swimmingPool(x) {this._swimmingPool = x;}
+      set airportShuttle(x) {this._airportShuttle = x;}
+      set restaurants(x) {this._restaurants = x;}
+
+      availableRooms() {
+        return this._rooms - this._booked;
+      }
+
+      bookRooms() {
+        if (this._booked < this._rooms) {
+          this._booked++;
+          return `There are now ${this.availableRooms()} rooms available today.`;
+        }
+      }
+
+      cancelRoom() {
+        if (this._booked > 0) {
+          this._booked--;
+          return `You have cancelled a room. There are now ${this.availableRooms()} rooms available today.`;
+        } else {
+          return `No booked rooms to cancel.`;
+        }
+      }
+
+      addRoomType(type) {
+        this._roomTypes.push(type);
+      }
+
+    }
+
+
+    const hotel = new Hotel (
+      // name, location, rooms, booked, gym
+      "Portofino",
+      "San Andres Colombia",
+      40,
+      25,
+      true
+    );
+
+    hotel.roomTypes = ["twin", "double", "suite"];
+    hotel.swimmingPool = true;
+    hotel.airportShuttle = true;
+    hotel.restaurants = [
+      ["Harolds", "American"],
+      ["Kyoto", "Japanese"],
+      ["Relax", "Fusion"]
+    ];
+
+    hotel.addRoomType("Honeymoon");
+    console.log(hotel.roomTypes);
+    console.log(hotel.restaurants);
+    console.log(hotel.restaurants.length);
+
+
+    $("#hotel-name").text(`The hotel is ${hotel.name}, located in ${hotel.location}`);
+    $("#hotel-rooms").text(`There are ${hotel.availableRooms()} rooms available today`);
+    $("#book-room").text(`You have booked a room. ${hotel.bookRooms()}`);
+    $("#cancel-room").text(`${hotel.cancelRoom()}`);
+    $("#room-types").text(`Room types: ${hotel.roomTypes.join(", ")}.`);
+    $("#airport-shuttle").html(`<strong>Hotel has a shuttle?</strong> ${hotel.airportShuttle}`);
+    $("#swimming-pool").html(`<strong>Hotel has a swimming pool?</strong> ${hotel.swimmingPool}`);
+    $("#hotel-restaurants-lenght").html(`<strong>Hotel has ${hotel.restaurants.length} restaurants each with different theme.</strong> They are:`);
+
+    
+    let key_and_values = "";
+    hotel.restaurants.forEach(function (restaurants) {
+      key_and_values += `<strong>${restaurants[0]}</strong>: ${restaurants[1]} <br>`
+    });
+
+    $("#hotel-restaurants").html(`${key_and_values}`);
+
+
+
+    // hotel.addRoomType("honeymoon");
+    // log(`Room Types: ${hotel.roomTypes.join(", ")}`);
+
+    // Resort class inheriting from Hotel
+  </script>
+
+  <section class="mx-0 my-5" id="part-2-inheritance">
+    <h3>Part 2 Inheritance</h3>
+  </section>
+
+  <script>
+    class Resort extends Hotel {
+      constructor(name, location, rooms, booked, gym, resortType, beachFront, kidsClub) {
+        super(name, location, rooms, booked, gym);
+        this._resortType = resortType;
+        this._beachFront = beachFront;
+        this._kidsClub = kidsClub;
+      }
+
+      get resortType() {
+        return this._resortType;
+      }
+      set resortType(x) {
+        this._resortType = x;
+      }
+
+      get beachFront() {
+        return this._beachFront;
+      }
+      set beachFront(x) {
+        this._beachFront = x;
+      }
+
+      get kidsClub() {
+        return this._kidsClub;
+      }
+      set kidsClub(x) {
+        this._kidsClub = x;
+      }
+    }
+
+    // Test Resort class as shown in screenshot
+    const resort = new Resort(
+      "Renaissance Phuket",
+      "Phuket",
+      100,
+      40,
+      true,
+      "family",
+      true,
+      true
+    );
+
+    let resortInfo = `<strong>A new Resort has been created:</strong> ${resort.name} located in ${resort.location}. It is a ${resort.resortType} resort.`;
+    resortInfo += `<br><strong>Is it on the beach?</strong> ${resort.beachFront}`;
+    resortInfo += `<br><strong>Does it have a kids club?</strong> ${resort.kidsClub}`;
+
+    // Simulate kids club being renovated
+    resortInfo += `<br>Oh No! The kids club is being renovated!`;
+    resort.kidsClub = false;
+    resortInfo += `<br><strong>Does it have a kids club?</strong> ${resort.kidsClub}`;
+
+    // Display in Part 2 section
+    $("#part-2-inheritance").append(`<div>${resortInfo}</div>`);
+  </script>
+  </body>
+</html>

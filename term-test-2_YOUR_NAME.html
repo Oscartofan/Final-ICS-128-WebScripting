@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1">
+		<title>ICS 128 W2025 - Term Test 2 - YOUR NAME</title>
+		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+		<style>
+			body { margin: 10px; }
+			#exercise_1 { margin-bottom: 20px; }
+			.tab-content { border: 1px solid #ccc; border-radius: 5px; padding: 10px;  margin-top: 10px;}
+			.tab-content img { border-radius: 5px; }
+		</style>
+		<script>
+			let tags = [
+							{ 
+							  name: "h1",
+							  innerText: "Exercise 1",
+							},
+							{ 
+							  name: "p",
+							  innerText: "JavaScript sure is fun!",
+							},
+							{
+							  name: "button",
+							  innerText: "Click Me",
+							  className: "btn btn-primary",
+							  onclick: (() => { alert("Thank you for clicking the button, wonderful human!"); })
+							}
+						];
+		</script>
+	</head>
+	<body> 
+
+		<div id="exercise_1"></div>
+
+
+		<h1>Exercise 2</h1>
+		<div id="exercise_2">
+			<button class="btn btn-primary disabled" id="first-button"  type="button">Story</button>
+			<button class="btn btn-primary"	         id="second-button" type="button">Image</button>
+	
+			<div class="tab-content">
+			  <div class="tab-pane fade show active" id="first-tab-pane"><p>Professor Brandon <b>never</b> imagined that his life as a computer science professor at the Camosun College would take such a fantastical turn.</p> <p>As he stood at the lectern, explaining the intricacies of jQuery and communicating with web servers to his students, a peculiar sensation washed over him. Suddenly, lines of arcane symbols began to materialize before his eyes, intertwining with the code on his slides. </p>  <p>Bewildered, he watched as his power-point clicker levitated out of his hand and his laptop emitted sparks of magical energy. </p> <p>With a mixture of shock and curiosity, Professor Brandon realized that he wasn't just a mere mortal,  he was a wizard.</p> <p>And so began his journey into a world where binary code and incantations intertwined, where the realms of technology and magic merged into a fascinating tapestry of knowledge and power.</p></div>
+			 <div class="tab-pane fade" id="second-tab-pane"><img src="https://128.compsci.cc/images/professor-brandon.png" alt="" ></div>	
+			</div>
+		</div>	
+		
+		
+	
+		
+		<!-- EXERCISE #1: BEGIN -->
+		<script>
+		/* Demonstrate iteration and destructuring, and DOM manipulation [20 points] */
+
+		for (let items of tags) {
+
+			const {name, innerText, className, onclick} = items;
+
+			console.log(name, innerText, className, onclick);
+
+			//Creating the elements
+			const element = document.createElement(name);
+
+			//
+			element.innerText = innerText;
+			element.className = className;
+			element.onclick = onclick;
+
+			document.getElementById('exercise_1').appendChild(element);
+		}
+
+		</script>
+		<!-- EXERCISE #1: END -->
+		
+		
+		
+		<!-- EXERCISE #2: BEGIN -->
+		<script>
+		/* Demonstrate event listeners, DOM manipulation [20 points] */
+		let button1 = document.getElementById('first-button');
+		let button2 = document.getElementById('second-button');
+		let pane1 = document.getElementById('first-tab-pane');
+		let pane2 = document.getElementById('second-tab-pane');
+
+		const toggle_buttons = (event) => {
+			let clicked_button = event.target;
+
+			let buttons = document.querySelectorAll('#exercise_2 > button');
+			for(let button of buttons) {
+				button.classList.remove('disabled');
+			}
+
+			clicked_button.classList.add('disabled');
+
+
+
+
+			let classes = document.querySelectorAll('.tab-pane');
+			for(let ArryaClass of classes) {
+				ArryaClass.classList.remove('show', 'active');
+			}
+
+			if (clicked_button == button1) {
+				pane1.classList.add('show', 'active');
+				
+			} else {
+				pane2.classList.add('show', 'active');
+			}
+		}
+
+		
+		button1.addEventListener('click', toggle_buttons);
+		button2.addEventListener('click', toggle_buttons);
+
+		
+			
+	
+	
+		</script>
+		<!-- EXERCISE #2: END -->
+	</body>
+</html>
+<!-- JavaScript sure is fun! -->

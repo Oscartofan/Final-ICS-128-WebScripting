@@ -1,0 +1,27 @@
+                    Self-Assessment 
+
+1. Script Placement: Where to place your JavaScript code (there is more than one place) 
+and when it is appropriate to place it one place or another.
+
+- under the <script></script> code with the correct src of the java file. thta was initialize 
+first in the (head)
+- inside the java file.
+
+2. DOM Element Targeting
+
+- document.querySelector(#THEID).innerHTML (get need to put the same ID and.... magic!)
+works exaclty the same as targeting labels with css
+-I know there another one but with classes
+
+3. Number formatting
+How to convert strings to numbers (integers and floats) and how to format them appropriately.
+
+- This is the way I do based in lectures, I use parseInt() or when I know I have a variable that is and integer I do (+=) to the variable I want to convert.
+
+4. UI / UX
+How to build superior experience to your page using JavaScript and other frameworks (such as Bootstrap).
+
+
+So far I know more of css (bootstrap) than JS so...
+to build a really nice webpage in my opinion we need to have every part of the web in sections, (Showcase, hero, Navbar, buttons, IMG with correct scaling... etc etc)
+and the most important thing ALWAYS MOBILE!
